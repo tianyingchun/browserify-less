@@ -1,5 +1,5 @@
 {
-  "name": "browserify-less",
+  "name": "browserify-less-transfrom",
   "version": "1.0.0",
   "description": "browserify less transform allow us use import/require(xxxx.less|css)",
   "main": "index.js",
