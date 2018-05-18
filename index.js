@@ -24,26 +24,28 @@ module.exports = function(opts) {
 
     var buffer = "";
 
-    //Save file path so that the Less parser can resolve
+    // Save file path so that the Less parser can resolve
     // imports
     opts.paths.push(path.dirname(fileName));
 
-    //Write function:
+    // Write function:
     // buffer the entire file
-    function write(chunk) {
+    function transform(chunk, enc, next) {
       buffer += chunk.toString();
+      next();
     }
 
-    //End function:
+    // End function:
     // Save and concatenate the less/css buffer into less_str
     // Compile less_str with its options
     // (compile less is dobounced)
-    function end() {
+    function flush(done) {
       less_str += buffer;
       compile_less(less_str, opts)
-      this.queue(null);
+      this.push(null);
+      done();
     }
 
-    return through(write, end);
+    return through(transform, flush);
   }
 };
