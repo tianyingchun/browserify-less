@@ -65,7 +65,12 @@ var debounced_compile = db(function compile(less_str, options) {
           cb_has_been_called = true;
         }
       });
-
+      stream.on('error', function(err) {
+        if (!cb_has_been_called) {
+          options.cb();
+          cb_has_been_called = true;
+        }
+      });
       stream.on('end', function() {
         if (!cb_has_been_called) {
           options.cb();
